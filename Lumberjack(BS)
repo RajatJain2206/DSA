@@ -1,0 +1,85 @@
+//Lumberjack problem
+https://www.spoj.com/problems/EKO/
+
+
+
+
+#include<iostream>
+using namespace std;
+
+
+bool isPossible(long long trees[],long long n,long long woodReq,long long mid){
+  long long tree_count = 1;
+  long long woodCut = 0;
+
+  for(int i=0;i<n;i++){
+    if(trees[i]-mid>woodCut){
+      woodCut+=(trees[i]-mid);
+      tree_count++;
+    }
+
+    else{
+      tree_count++;
+      if(tree_count>n){
+        return false;
+      }
+      woodCut = 0;
+    }
+  }
+  if(woodCut>=woodReq){
+    return true;
+  }
+  else{
+    return false;
+  }
+
+  
+}
+
+long long greatestHeight(long long trees[],long long n,long long woodReq){
+  
+  long long s = 0;
+  long long ans = 0;
+  long long maxi = 0;
+
+  for(int i=0;i<n;i++){
+    maxi = max(maxi,trees[i]);
+  }
+
+  long long e = maxi;
+  long long mid = s + (e-s)/2;
+
+  while(s<=e){
+    if(isPossible(trees,n,woodReq,mid)){
+      ans = mid;
+      s = mid + 1;
+    }
+
+    else{
+      e = mid - 1;
+    }
+    mid = s + (e-s)/2;
+  }
+  return ans;
+}
+
+int main(){
+  long long trees[1000000];
+  long long n;
+  long long woodReq;
+  cin>>n;
+  cout<<" ";
+  cin>>woodReq;
+  for(int i=0;i<n;i++){
+    cin>>trees[i];
+  }
+
+
+  
+  int ans = greatestHeight(trees,n,woodReq);
+  cout<<ans;
+
+
+
+
+}
